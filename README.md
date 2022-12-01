@@ -1,20 +1,4 @@
-# editpasfoto.com
-
-> [editpasfoto.com](https://editpasfoto.com) is a web-based Indonesian identification photograph editor app running on a client-side. Editpasfoto (ENG: _edit-identification-photograph_) built using Next.js + Typescript + TailwindCSS deployed using Vercel.
-
-![](/assets/main.png)
-
-## Features
-
-- [x] Client-side, privacy first (no photo is being collected)
-
-  ![](/assets/no-upload.gif)
-
-## To-do
-
-- [ ] Add more outer layer variation
-- [ ] Change background color from red to blue and vice versa
-- [ ] Remove white bar on the bottom and the top of the page when overscroll
+# Tugas Akhir
 
 ## Getting Started
 

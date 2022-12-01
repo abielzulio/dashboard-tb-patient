@@ -220,6 +220,7 @@ const Home: NextPage = () => {
       xField: "month",
       yField: "value",
       height: 200,
+      autoFit: true,
       xAxis: {
         range: [0, 1],
       },
@@ -232,7 +233,7 @@ const Home: NextPage = () => {
     }
 
     return (
-      <div className="h-fit rounded-md p-[18px] border-[#E8E8E8] border-[1px] gap-[20px] flex flex-col">
+      <div className="h-fit w-full rounded-md p-[18px] border-[#E8E8E8] border-[1px] gap-[20px] flex flex-col">
         <h1 className="text-black text-left font-semibold">{title}</h1>
         <div className="flex gap-[10px] items-end">
           <p className="text-black text-left text-[48px] font-semibold font-mono tracking-tighter">
@@ -283,7 +284,7 @@ const Home: NextPage = () => {
             </button>
           </div>
         </div>
-        <div className="gap-[30px] grid grid-cols-4">
+        <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
           <DemoArea
             data={amplitudo_data.slice(0, showCount)}
             title="Amplitudo"
@@ -308,7 +309,7 @@ const Home: NextPage = () => {
       </div>
       <div className="gap-[20px] flex flex-col px-[24px]">
         <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
-        <div className="gap-[30px] grid grid-cols-3">
+        <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
           <DemoArea
             data={body_weight_data.slice(0, showCount)}
             title="Berat badan"

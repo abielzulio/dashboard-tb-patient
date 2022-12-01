@@ -308,7 +308,7 @@ const Home: NextPage = () => {
         </div>
       </div>
       <div className="gap-[20px] flex flex-col px-[24px]">
-        <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
+        <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
         <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
           <DemoArea
             data={body_weight_data.slice(0, showCount)}

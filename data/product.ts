@@ -15,14 +15,14 @@ interface Product {
 }
 
 export const product: Product = {
-  name: "Tugas Akhir Abiel Zulio M",
+  name: "Dashboard Tren Kondisi Pasien",
   description: {
-    short: "Edit Almamater, Jas Formal, dan Ganti Latar Foto",
-    long: "Editpasfoto merupakan aplikasi swaedit pas foto berbasis web dengan fitur mengganti ratio ukuran foto dan menambah layer almamater kampus & jas formal",
+    short: "Tugas Akhir — Abiel Zulio M",
+    long: "Tugas Akhir — Abiel Zulio M",
   },
-  tagline: "Edit pas foto, tanpa skill edit foto",
-  keywords: "edit pas foto, pas foto, ganti ratio, almamater, jas formal",
-  url: "https://editpasfoto.com/",
+  tagline: "Dashboard Tren Kondisi Pasien",
+  keywords: "wicara, pasien tuberkulosis, dashboard pemantau",
+  url: "https://tugas-akhir-one.vercel.app/",
   img: "/img/og.png",
   author: "Abiel Zulio M",
   favicon: "/img/favicon.png",

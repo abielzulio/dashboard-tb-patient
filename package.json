@@ -1,5 +1,5 @@
 {
-  "name": "tugas-akhir",
+  "name": "dashboard-wicara",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "@ant-design/plots": "^1.2.2",
     "@radix-ui/react-icons": "^1.1.1",
+    "antd": "^5.0.3",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"

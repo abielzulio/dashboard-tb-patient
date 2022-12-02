@@ -1,6 +1,7 @@
-import type { NextPage } from "next"
-import { useState, useEffect } from "react"
 import { Area } from "@ant-design/plots"
+import { Segmented } from "antd"
+import type { NextPage } from "next"
+import { useState } from "react"
 
 const Home: NextPage = () => {
   interface Data {
@@ -439,82 +440,89 @@ const Home: NextPage = () => {
     }
   }
   return (
-    <section className="min-w-screen min-h-screen py-[30px] gap-[30px] flex flex-col bg-white">
-      <div className="gap-[20px] flex flex-col px-[24px]">
-        <div className="flex justify-between">
-          <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
-          <p className="text-black">
-            {signal_length_data[selectedMonth - 1].month}
-          </p>
-          <div className="flex gap-[10px] text-black text-[24px]">
-            <button
-              onClick={() => handleDecrement()}
-              disabled={selectedMonth === 1}
-              style={{
-                opacity: selectedMonth === 1 ? 0.5 : 1,
-              }}
-            >
-              ←
-            </button>
-            <button
-              onClick={() => handleIncrement()}
-              disabled={selectedMonth === 6}
-              style={{
-                opacity: selectedMonth === 6 ? 0.5 : 1,
-              }}
-            >
-              →
-            </button>
+    <>
+      <div className="fixed bottom-[20px] rounded-xl w-fit h-fit z-10 py-[10px] px-[15px] flex bg-white text-black justify-center md:gap-[20px] gap-[15px] left-0 right-0 mx-auto drop-shadow-xl">
+        <button
+          onClick={() => handleDecrement()}
+          disabled={selectedMonth === 1}
+          style={{
+            opacity: selectedMonth === 1 ? 0.5 : 1,
+          }}
+        >
+          ←
+        </button>
+        <Segmented
+          options={signal_length_data.map((item, id) => id + 1)}
+          value={selectedMonth}
+          onChange={setSelectedMonth}
+          onResize={undefined}
+          onResizeCapture={undefined}
+          color="dark"
+        />
+        <button
+          onClick={() => handleIncrement()}
+          disabled={selectedMonth === 6}
+          style={{
+            opacity: selectedMonth === 6 ? 0.5 : 1,
+          }}
+        >
+          →
+        </button>
+      </div>
+      <section className="min-w-screen min-h-screen pt-[30px] pb-[80px] gap-[30px] flex flex-col bg-white">
+        <div className="gap-[20px] flex flex-col px-[24px]">
+          <div className="flex justify-between">
+            <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
+          </div>
+          <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
+            <DemoArea
+              data={amplitudo_data}
+              title="Amplitudo"
+              units="Hz"
+              selectedMonth={selectedMonth}
+            />
+            <DemoArea
+              data={signal_length_data}
+              title="Panjang sinyal"
+              selectedMonth={selectedMonth}
+            />
+            <DemoArea
+              data={peak_freq_data}
+              title="Puncak frekuensi"
+              units="Hz"
+              selectedMonth={selectedMonth}
+            />
+            <DemoArea
+              data={intermodulation_distortion_data}
+              title="Intermodulasi distorsi"
+              selectedMonth={selectedMonth}
+            />
           </div>
         </div>
-        <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
-          <DemoArea
-            data={amplitudo_data}
-            title="Amplitudo"
-            units="Hz"
-            selectedMonth={selectedMonth}
-          />
-          <DemoArea
-            data={signal_length_data}
-            title="Panjang sinyal"
-            selectedMonth={selectedMonth}
-          />
-          <DemoArea
-            data={peak_freq_data}
-            title="Puncak frekuensi"
-            units="Hz"
-            selectedMonth={selectedMonth}
-          />
-          <DemoArea
-            data={intermodulation_distortion_data}
-            title="Intermodulasi distorsi"
-            selectedMonth={selectedMonth}
-          />
+        <div className="gap-[20px] flex flex-col px-[24px]">
+          <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
+          <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
+            <DemoArea
+              data={body_weight_data}
+              title="Berat badan"
+              units="kg"
+              selectedMonth={selectedMonth}
+            />
+            <DemoArea
+              data={bmi_data}
+              title="Indeks massa tubuh"
+              selectedMonth={selectedMonth}
+            />
+            <DemoArea
+              data={lung_data}
+              title="Luas lesi infeksi"
+              units="%"
+              selectedMonth={selectedMonth}
+            />
+          </div>
         </div>
-      </div>
-      <div className="gap-[20px] flex flex-col px-[24px]">
-        <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
-        <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
-          <DemoArea
-            data={body_weight_data}
-            title="Berat badan"
-            units="kg"
-            selectedMonth={selectedMonth}
-          />
-          <DemoArea
-            data={bmi_data}
-            title="Indeks massa tubuh"
-            selectedMonth={selectedMonth}
-          />
-          <DemoArea
-            data={lung_data}
-            title="Luas lesi infeksi"
-            units="%"
-            selectedMonth={selectedMonth}
-          />
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 

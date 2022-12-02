@@ -1,5 +1,6 @@
 import { Area } from "@ant-design/plots"
 import { Segmented } from "antd"
+import { SegmentedValue } from "antd/es/segmented"
 import type { NextPage } from "next"
 import { useState } from "react"
 
@@ -454,7 +455,9 @@ const Home: NextPage = () => {
         <Segmented
           options={signal_length_data.map((item, id) => id + 1)}
           value={selectedMonth}
-          onChange={setSelectedMonth}
+          onChange={(value: SegmentedValue) =>
+            setSelectedMonth(value as number)
+          }
           onResize={undefined}
           onResizeCapture={undefined}
           color="dark"

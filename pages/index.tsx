@@ -4,9 +4,42 @@ import { Area } from "@ant-design/plots"
 
 const Home: NextPage = () => {
   interface Data {
-    month: string
+    month: string | number
     value: number
   }
+
+  const MONTHS: string[] = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MEI",
+    "JUN",
+    "JUL",
+    "AGT",
+    "SEP",
+    "OKT",
+    "NOV",
+    "DES",
+  ]
+
+  /*   const master_data = [
+    {
+      month: 1,
+      speech: {
+        amplitudo: 80,
+        signal_length: 60,
+        peak_frequency: 93,
+        intermodulation_distortion: 110,
+      },
+      physiology: {
+        body_weight: 80,
+        body_height: 60,
+        lesi: 93,
+      },
+    },
+  ] */
+
   const amplitudo_data: Data[] = [
     {
       month: "JAN",
@@ -30,10 +63,10 @@ const Home: NextPage = () => {
     },
     {
       month: "JUN",
-      value: 112,
+      value: 60,
     },
   ]
-  const signal_long_data: Data[] = [
+  const signal_length_data: Data[] = [
     {
       month: "JAN",
       value: 60,
@@ -194,27 +227,49 @@ const Home: NextPage = () => {
     data,
     title,
     units,
+    selectedMonth,
   }: {
     data: any
     title: string
     units?: string
+    selectedMonth: number
   }) => {
-    /*     const [data, setData] = useState([]) */
+    const PADDING_NUMBER: number = 20
+    const MAX_VALUE: number = Math.max(...data.map((d: Data) => d.value))
+    const MIN_VALUE: number = Math.min(...data.map((d: Data) => d.value))
 
-    /*     useEffect(() => {
-      asyncFetch()
-    }, []) */
+    const isSecondMonthAvailable: boolean = data.length > 1
+    const isUptrend: boolean =
+      selectedMonth > 1 &&
+      data[selectedMonth - 1].value > data[selectedMonth - 2].value
+        ? true
+        : false
 
-    /*     const asyncFetch = () => {
-      fetch(
-        "https://gw.alipayobjects.com/os/bmw-prod/360c3eae-0c73-46f0-a982-4746a6095010.json"
-      )
-        .then((response) => response.json())
-        .then((json) => setData(json))
-        .catch((error) => {
-          console.log("fetch data failed", error)
-        })
-    } */
+    const isDowntrend: boolean =
+      selectedMonth > 1 &&
+      data[selectedMonth - 1].value < data[selectedMonth - 2].value
+        ? true
+        : false
+
+    const isStable: boolean = !isUptrend && !isDowntrend
+
+    const TREND_COLOR_FILL_PRIMARY: string = isStable
+      ? "#6F6F6F"
+      : isUptrend
+      ? "#30A46C"
+      : "#E54C2E"
+
+    const TREND_COLOR_FILL_SECONDARY: string = isStable
+      ? "#E8E8E8"
+      : isUptrend
+      ? "#DDF3E4"
+      : "#FFE6E2"
+    const TREND_COLOR_STROKE: string = isStable
+      ? "#6F6F6F"
+      : isUptrend
+      ? "#30A46C"
+      : "#E54C2E"
+
     const config = {
       data,
       xField: "month",
@@ -224,38 +279,163 @@ const Home: NextPage = () => {
       xAxis: {
         range: [0, 1],
       },
-      color: "#30A46C",
+      meta: {
+        value: {
+          min: MIN_VALUE - PADDING_NUMBER / 2,
+          max: MAX_VALUE + PADDING_NUMBER,
+        },
+      },
+      tooltip: {
+        showMarkers: true,
+      },
+      annotations: [
+        {
+          type: "line",
+          start: ["min", data[0].value],
+          end: ["max", data[0].value],
+          style: {
+            lineWidth: 2,
+            stroke: TREND_COLOR_STROKE,
+            opacity: 0.8,
+            lineDash: [2, 2],
+          },
+        },
+        {
+          type: "line",
+          start: [MONTHS[selectedMonth - 1], "min"],
+          end: [MONTHS[selectedMonth - 1], "max"],
+          style: {
+            lineWidth: 1,
+            stroke: TREND_COLOR_STROKE,
+            opacity: 0.5,
+          },
+        },
+        {
+          type: "dataMarker",
+          position: [
+            data[selectedMonth - 1]?.month,
+            data[selectedMonth - 1]?.value,
+          ],
+          line: {
+            length: 0,
+          },
+          point: {
+            style: {
+              fill: TREND_COLOR_FILL_SECONDARY,
+              stroke: TREND_COLOR_STROKE,
+            },
+          },
+          autoAdjust: false,
+        },
+      ] as any,
+      color: TREND_COLOR_FILL_PRIMARY,
       areaStyle: () => {
         return {
-          fill: "l(270) 0:#ffffff 0.5:#DDF3E4 1:#30A46C",
+          fill: `l(270) 0:#ffffff 0.5:${TREND_COLOR_FILL_PRIMARY} 1:${TREND_COLOR_STROKE}`,
         }
+      },
+      animation: {
+        appear: {
+          animation: "path-in",
+          duration: 1000,
+        },
       },
     }
 
     return (
-      <div className="h-fit w-full rounded-md p-[18px] border-[#E8E8E8] border-[1px] gap-[20px] flex flex-col">
+      <div className="h-fit w-full rounded-md p-[18px] border-[#E8E8E8] border-[1px] gap-[10px] flex flex-col">
         <h1 className="text-black text-left font-semibold">{title}</h1>
-        <div className="flex gap-[10px] items-end">
-          <p className="text-black text-left text-[48px] font-semibold font-mono tracking-tighter">
-            {data[data.length - 1].value}
-          </p>
-          {units && (
-            <p className="text-[#8F8F8F] font-semibold mb-[12px]">{units}</p>
+        <div className="flex flex-col gap-[0px] mb-[10px]">
+          <div className="flex gap-[10px] items-start">
+            <p className="text-black text-left text-[48px] font-semibold font-mono tracking-tighter">
+              {data[selectedMonth - 1].value}
+            </p>
+            {units && (
+              <p className="text-[#8F8F8F] font-semibold mt-[12px]">{units}</p>
+            )}
+          </div>
+          {isSecondMonthAvailable && (
+            <div className="flex flex-col items-start text-black">
+              <div className="flex justify-center items-center gap-[5px]">
+                {isUptrend && (
+                  <p className="text-[#30A46C] font-semibold">
+                    ↑ +
+                    {(
+                      data[selectedMonth - 1].value -
+                      data[selectedMonth - 2].value
+                    )
+                      .toString()
+                      .substring(0, 5)}{" "}
+                    {units}
+                  </p>
+                )}
+                {isDowntrend && (
+                  <p className="text-[#F4664A] font-semibold">
+                    ↓{" "}
+                    {(
+                      data[selectedMonth - 1].value -
+                      data[selectedMonth - 2].value
+                    )
+                      .toString()
+                      .substring(0, 5)}{" "}
+                    {units}
+                  </p>
+                )}
+                {selectedMonth > 1 && isStable && (
+                  <p className="text-[#8F8F8F] font-semibold">+0 {units}</p>
+                )}
+                {selectedMonth > 1 && (
+                  <p className="text-[12px] opacity-50">dari bulan lalu</p>
+                )}
+              </div>
+              <div className="flex justify-center items-center gap-[5px]">
+                {isUptrend && (
+                  <p className="text-[#30A46C] font-semibold">
+                    ↑ +
+                    {(data[selectedMonth - 1].value - data[0].value)
+                      .toString()
+                      .substring(0, 5)}{" "}
+                    {units}
+                  </p>
+                )}
+                {isDowntrend && (
+                  <p className="text-[#F4664A] font-semibold">
+                    ↓{" "}
+                    {(data[selectedMonth - 1].value - data[0].value)
+                      .toString()
+                      .substring(0, 5)}{" "}
+                    {units}
+                  </p>
+                )}
+                {selectedMonth > 1 && isStable && (
+                  <p className="text-[#8F8F8F] font-semibold">+0 {units}</p>
+                )}
+                {selectedMonth > 1 && (
+                  <p className="text-[12px] opacity-50">dari bulan pertama</p>
+                )}
+              </div>
+            </div>
           )}
         </div>
-        <Area {...config} />
+        {selectedMonth > 1 ? (
+          <Area {...config} />
+        ) : (
+          <p className="text-sm text-center w-full text-black opacity-30 py-[30px] px-[15px]">
+            Grafik akan muncul setelah data bulan kedua tersedia
+          </p>
+        )}
       </div>
     )
   }
-  const [showCount, setShowCount] = useState<number>(6)
+  const [selectedMonth, setSelectedMonth] = useState<number>(6)
   const handleDecrement = () => {
-    if (showCount !== 2) {
-      setShowCount(showCount - 1)
+    if (selectedMonth !== 1) {
+      setSelectedMonth(selectedMonth - 1)
     }
   }
   const handleIncrement = () => {
-    if (showCount !== 6) {
-      setShowCount(showCount + 1)
+    if (selectedMonth !== 6) {
+      setSelectedMonth(selectedMonth + 1)
     }
   }
   return (
@@ -263,21 +443,24 @@ const Home: NextPage = () => {
       <div className="gap-[20px] flex flex-col px-[24px]">
         <div className="flex justify-between">
           <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
+          <p className="text-black">
+            {signal_length_data[selectedMonth - 1].month}
+          </p>
           <div className="flex gap-[10px] text-black text-[24px]">
             <button
               onClick={() => handleDecrement()}
-              disabled={showCount === 2}
+              disabled={selectedMonth === 1}
               style={{
-                opacity: showCount === 2 ? 0.5 : 1,
+                opacity: selectedMonth === 1 ? 0.5 : 1,
               }}
             >
               ←
             </button>
             <button
               onClick={() => handleIncrement()}
-              disabled={showCount === 6}
+              disabled={selectedMonth === 6}
               style={{
-                opacity: showCount === 6 ? 0.5 : 1,
+                opacity: selectedMonth === 6 ? 0.5 : 1,
               }}
             >
               →
@@ -286,24 +469,26 @@ const Home: NextPage = () => {
         </div>
         <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
           <DemoArea
-            data={amplitudo_data.slice(0, showCount)}
+            data={amplitudo_data}
             title="Amplitudo"
             units="Hz"
+            selectedMonth={selectedMonth}
           />
           <DemoArea
-            data={signal_long_data.slice(0, showCount)}
+            data={signal_length_data}
             title="Panjang sinyal"
-            units="Hz"
+            selectedMonth={selectedMonth}
           />
           <DemoArea
-            data={peak_freq_data.slice(0, showCount)}
+            data={peak_freq_data}
             title="Puncak frekuensi"
             units="Hz"
+            selectedMonth={selectedMonth}
           />
           <DemoArea
-            data={intermodulation_distortion_data.slice(0, showCount)}
+            data={intermodulation_distortion_data}
             title="Intermodulasi distorsi"
-            units="Hz"
+            selectedMonth={selectedMonth}
           />
         </div>
       </div>
@@ -311,18 +496,21 @@ const Home: NextPage = () => {
         <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
         <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
           <DemoArea
-            data={body_weight_data.slice(0, showCount)}
+            data={body_weight_data}
             title="Berat badan"
             units="kg"
+            selectedMonth={selectedMonth}
           />
           <DemoArea
-            data={bmi_data.slice(0, showCount)}
+            data={bmi_data}
             title="Indeks massa tubuh"
+            selectedMonth={selectedMonth}
           />
           <DemoArea
-            data={lung_data.slice(0, showCount)}
-            title="Luas paru non-bercak"
+            data={lung_data}
+            title="Luas lesi infeksi"
             units="%"
+            selectedMonth={selectedMonth}
           />
         </div>
       </div>

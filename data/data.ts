@@ -33,23 +33,23 @@ export const signal_length_data: Data[] = [
   },
   {
     month: "FEB",
-    value: 63,
+    value: 50,
   },
   {
     month: "MAR",
-    value: 71,
+    value: 49,
   },
   {
     month: "APR",
-    value: 75,
+    value: 48,
   },
   {
     month: "MEI",
-    value: 78,
+    value: 42,
   },
   {
     month: "JUN",
-    value: 80,
+    value: 30,
   },
 ]
 export const peak_freq_data: Data[] = [

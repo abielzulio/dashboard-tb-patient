@@ -264,12 +264,14 @@ const Home: NextPage = () => {
   }
   return (
     <>
-      <div className="fixed bottom-[20px] rounded-xl w-fit h-fit z-10 py-[10px] px-[15px] flex bg-white text-black justify-center md:gap-[20px] gap-[15px] left-0 right-0 mx-auto drop-shadow-xl">
+      <div className="fixed bottom-[20px] rounded-xl w-fit h-fit z-10 py-[10px] px-[10px] flex bg-white text-black justify-center left-0 right-0 mx-auto drop-shadow-xl">
         <button
-          onClick={() => handleDecrement()}
+          onClick={() => handleIncrement()}
           disabled={selectedMonth === 1}
+          className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
           style={{
-            opacity: selectedMonth === 1 ? 0.5 : 1,
+            opacity: selectedMonth === 6 ? 0.3 : 1,
+            cursor: selectedMonth === 1 ? "not-allowed" : "pointer",
           }}
         >
           ←
@@ -287,8 +289,10 @@ const Home: NextPage = () => {
         <button
           onClick={() => handleIncrement()}
           disabled={selectedMonth === 6}
+          className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
           style={{
-            opacity: selectedMonth === 6 ? 0.5 : 1,
+            opacity: selectedMonth === 6 ? 0.3 : 1,
+            cursor: selectedMonth === 6 ? "not-allowed" : "pointer",
           }}
         >
           →

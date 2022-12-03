@@ -184,59 +184,38 @@ const Home: NextPage = () => {
           {isSecondMonthAvailable && (
             <div className="flex flex-col items-start text-black">
               <div className="flex justify-center items-center gap-[5px]">
-                {isUptrend && (
-                  <p className="text-[#30A46C] font-semibold">
-                    ↑ +
-                    {(
+                <p
+                  className="font-semibold"
+                  style={{ color: TREND_COLOR_FILL_PRIMARY }}
+                >
+                  {isUptrend === true && "↑"}
+                  {isDowntrend === true && "↓"}{" "}
+                  {(isUptrend || isDowntrend) &&
+                    (
                       data[selectedMonth - 1].value -
                       data[selectedMonth - 2].value
                     )
                       .toString()
-                      .substring(0, 5)}{" "}
-                    {units}
-                  </p>
-                )}
-                {isDowntrend && (
-                  <p className="text-[#F4664A] font-semibold">
-                    ↓{" "}
-                    {(
-                      data[selectedMonth - 1].value -
-                      data[selectedMonth - 2].value
-                    )
-                      .toString()
-                      .substring(0, 5)}{" "}
-                    {units}
-                  </p>
-                )}
-                {selectedMonth > 1 && isStable && (
-                  <p className="text-[#8F8F8F] font-semibold">+0 {units}</p>
-                )}
+                      .substring(0, 5)}
+                  {isStable && "+0"} {units}
+                </p>
                 {selectedMonth > 1 && (
                   <p className="text-[12px] opacity-50">dari bulan lalu</p>
                 )}
               </div>
               <div className="flex justify-center items-center gap-[5px]">
-                {isUptrend && (
-                  <p className="text-[#30A46C] font-semibold">
-                    ↑ +
-                    {(data[selectedMonth - 1].value - data[0].value)
+                <p
+                  className="font-semibold"
+                  style={{ color: TREND_COLOR_FILL_PRIMARY }}
+                >
+                  {isUptrend === true && "↑"}
+                  {isDowntrend === true && "↓"}{" "}
+                  {(isUptrend || isDowntrend) &&
+                    (data[selectedMonth - 1].value - data[0].value)
                       .toString()
-                      .substring(0, 5)}{" "}
-                    {units}
-                  </p>
-                )}
-                {isDowntrend && (
-                  <p className="text-[#F4664A] font-semibold">
-                    ↓{" "}
-                    {(data[selectedMonth - 1].value - data[0].value)
-                      .toString()
-                      .substring(0, 5)}{" "}
-                    {units}
-                  </p>
-                )}
-                {selectedMonth > 1 && isStable && (
-                  <p className="text-[#8F8F8F] font-semibold">+0 {units}</p>
-                )}
+                      .substring(0, 5)}
+                  {isStable && "+0"} {units}
+                </p>
                 {selectedMonth > 1 && (
                   <p className="text-[12px] opacity-50">dari bulan pertama</p>
                 )}

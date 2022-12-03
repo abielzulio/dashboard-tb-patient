@@ -159,23 +159,23 @@ export const bmi_data: Data[] = [
 export const lung_data: Data[] = [
   {
     month: "JAN",
-    value: 40,
+    value: 70,
   },
   {
     month: "FEB",
-    value: 45,
+    value: 60,
   },
   {
     month: "MAR",
-    value: 48,
+    value: 40,
   },
   {
     month: "APR",
-    value: 50,
+    value: 20,
   },
   {
     month: "MEI",
-    value: 80,
+    value: 10,
   },
   {
     month: "JUN",

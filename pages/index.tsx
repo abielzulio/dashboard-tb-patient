@@ -181,44 +181,42 @@ const Home: NextPage = () => {
               <p className="text-[#8F8F8F] font-semibold mt-[12px]">{units}</p>
             )}
           </div>
-          {isSecondMonthAvailable && (
+          {isSecondMonthAvailable && selectedMonth > 1 && (
             <div className="flex flex-col items-start text-black">
               <div className="flex justify-center items-center gap-[5px]">
                 <p
                   className="font-semibold"
                   style={{ color: TREND_COLOR_FILL_PRIMARY }}
                 >
-                  {isUptrend === true && "↑"}
-                  {isDowntrend === true && "↓"}{" "}
-                  {(isUptrend || isDowntrend) &&
-                    (
-                      data[selectedMonth - 1].value -
-                      data[selectedMonth - 2].value
-                    )
-                      .toString()
-                      .substring(0, 5)}
-                  {isStable && "+0"} {units}
+                  {!isStable
+                    ? ((isUptrend && "↑") || (isDowntrend && "↓")) +
+                      " " +
+                      (
+                        data[selectedMonth - 1].value -
+                        data[selectedMonth - 2].value
+                      )
+                        .toString()
+                        .substring(0, 5)
+                    : "+0"}
+                  {units && ` ${units}`}
                 </p>
-                {selectedMonth > 1 && (
-                  <p className="text-[12px] opacity-50">dari bulan lalu</p>
-                )}
+                <p className="text-[12px] opacity-50">dari bulan lalu</p>
               </div>
               <div className="flex justify-center items-center gap-[5px]">
                 <p
                   className="font-semibold"
                   style={{ color: TREND_COLOR_FILL_PRIMARY }}
                 >
-                  {isUptrend === true && "↑"}
-                  {isDowntrend === true && "↓"}{" "}
-                  {(isUptrend || isDowntrend) &&
-                    (data[selectedMonth - 1].value - data[0].value)
-                      .toString()
-                      .substring(0, 5)}
-                  {isStable && "+0"} {units}
+                  {!isStable
+                    ? ((isUptrend && "↑") || (isDowntrend && "↓")) +
+                      " " +
+                      (data[selectedMonth - 1].value - data[0].value)
+                        .toString()
+                        .substring(0, 5)
+                    : "+0"}
+                  {units && ` ${units}`}
                 </p>
-                {selectedMonth > 1 && (
-                  <p className="text-[12px] opacity-50">dari bulan pertama</p>
-                )}
+                <p className="text-[12px] opacity-50">dari bulan pertama</p>
               </div>
             </div>
           )}

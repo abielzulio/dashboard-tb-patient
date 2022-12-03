@@ -15,22 +15,22 @@ import {
 
 import { Data } from "types"
 
-const Home: NextPage = () => {
-  const MONTHS: string[] = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MEI",
-    "JUN",
-    "JUL",
-    "AGT",
-    "SEP",
-    "OKT",
-    "NOV",
-    "DES",
-  ]
+const MONTHS: string[] = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MEI",
+  "JUN",
+  "JUL",
+  "AGT",
+  "SEP",
+  "OKT",
+  "NOV",
+  "DES",
+]
 
+const Home: NextPage = () => {
   /*   const master_data = [
     {
       month: 1,

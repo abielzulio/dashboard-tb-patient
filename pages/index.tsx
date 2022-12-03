@@ -76,7 +76,9 @@ const Home: NextPage = () => {
         ? true
         : false
 
-    const isStable: boolean = !isUptrend && !isDowntrend
+    const isStable: boolean =
+      selectedMonth > 1 &&
+      data[selectedMonth - 1].value === data[selectedMonth - 2].value
 
     const TREND_COLOR_FILL_PRIMARY: string = isStable
       ? "#6F6F6F"

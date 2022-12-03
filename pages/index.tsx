@@ -48,7 +48,7 @@ const Home: NextPage = () => {
     },
   ] */
 
-  const DemoArea = ({
+  const LineArea = ({
     data,
     title,
     units,
@@ -303,24 +303,24 @@ const Home: NextPage = () => {
             <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
           </div>
           <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
-            <DemoArea
+            <LineArea
               data={amplitudo_data}
               title="Amplitudo"
               units="Hz"
               selectedMonth={selectedMonth}
             />
-            <DemoArea
+            <LineArea
               data={signal_length_data}
               title="Panjang sinyal"
               selectedMonth={selectedMonth}
             />
-            <DemoArea
+            <LineArea
               data={peak_freq_data}
               title="Puncak frekuensi"
               units="Hz"
               selectedMonth={selectedMonth}
             />
-            <DemoArea
+            <LineArea
               data={intermodulation_distortion_data}
               title="Intermodulasi distorsi"
               selectedMonth={selectedMonth}
@@ -330,18 +330,18 @@ const Home: NextPage = () => {
         <div className="gap-[20px] flex flex-col px-[24px]">
           <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
           <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
-            <DemoArea
+            <LineArea
               data={body_weight_data}
               title="Berat badan"
               units="kg"
               selectedMonth={selectedMonth}
             />
-            <DemoArea
+            <LineArea
               data={bmi_data}
               title="Indeks massa tubuh"
               selectedMonth={selectedMonth}
             />
-            <DemoArea
+            <LineArea
               data={lung_data}
               title="Luas lesi infeksi"
               units="%"

@@ -291,7 +291,7 @@ const Home: NextPage = () => {
           disabled={selectedMonth === 1}
           className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
           style={{
-            opacity: selectedMonth === 6 ? 0.3 : 1,
+            opacity: selectedMonth === 1 ? 0.3 : 1,
             cursor: selectedMonth === 1 ? "not-allowed" : "pointer",
           }}
         >
@@ -306,6 +306,7 @@ const Home: NextPage = () => {
           onResize={undefined}
           onResizeCapture={undefined}
           color="dark"
+          className="mx-[10px]"
         />
         <button
           onClick={() => handleIncrement()}

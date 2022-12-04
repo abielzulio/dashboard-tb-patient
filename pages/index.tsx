@@ -1,18 +1,18 @@
 import { Area } from "@ant-design/plots"
 import { Segmented } from "antd"
 import { SegmentedValue } from "antd/es/segmented"
-import type { NextPage } from "next"
-import { useState } from "react"
 import {
   amplitudo_data,
-  signal_length_data,
-  intermodulation_distortion_data,
-  body_weight_data,
   bmi_data,
+  body_weight_data,
+  intermodulation_distortion_data,
   lung_data,
   peak_freq_data,
+  signal_length_data,
 } from "data/data"
-
+import { motion } from "framer-motion"
+import type { NextPage } from "next"
+import { useState } from "react"
 import { Data } from "types"
 
 const MONTHS: string[] = [

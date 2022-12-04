@@ -64,6 +64,8 @@ const Home: NextPage = () => {
     const PADDING_NUMBER: number = 20
     const MAX_VALUE: number = Math.max(...data.map((d: Data) => d.value))
     const MIN_VALUE: number = Math.min(...data.map((d: Data) => d.value))
+    const RANGE_N_MONTH_VALUE: number =
+      data[selectedMonth - 1].value - data[0].value
 
     const isSecondMonthAvailable: boolean = data.length > 1
     const isUptrend: boolean =
@@ -81,6 +83,15 @@ const Home: NextPage = () => {
     const isStable: boolean =
       selectedMonth > 1 &&
       data[selectedMonth - 1].value === data[selectedMonth - 2].value
+
+    const isBetterThanTheFirstMonth: boolean =
+      RANGE_N_MONTH_VALUE > 0
+        ? inverse
+          ? false
+          : true
+        : inverse
+        ? true
+        : false
 
     const color = {
       grey: {
@@ -222,22 +233,32 @@ const Home: NextPage = () => {
                 </p>
                 <p className="text-[12px] opacity-50">dari bulan lalu</p>
               </div>
-              <div className="flex justify-center items-center gap-[5px]">
-                <p
-                  className="font-semibold"
-                  style={{ color: TREND_COLOR_FILL_PRIMARY }}
-                >
-                  {!isStable
-                    ? ((isUptrend && "↑") || (isDowntrend && "↓")) +
-                      " " +
-                      (data[selectedMonth - 1].value - data[0].value)
-                        .toString()
-                        .substring(0, 5)
-                    : "+0"}
-                  {units && ` ${units}`}
-                </p>
-                <p className="text-[12px] opacity-50">dari bulan pertama</p>
-              </div>
+
+              {RANGE_N_MONTH_VALUE !== 0 && (
+                <div className="flex justify-center items-center gap-[5px]">
+                  <p
+                    className="font-semibold"
+                    style={{
+                      color: isBetterThanTheFirstMonth
+                        ? color.green.primary
+                        : color.red.primary,
+                    }}
+                  >
+                    {isBetterThanTheFirstMonth
+                      ? inverse
+                        ? "↓"
+                        : "↑"
+                      : inverse
+                      ? "↑"
+                      : "↓"}{" "}
+                    {(data[selectedMonth - 1].value - data[0].value)
+                      .toString()
+                      .substring(0, 5)}
+                    {units && ` ${units}`}
+                  </p>
+                  <p className="text-[12px] opacity-50">dari bulan pertama</p>
+                </div>
+              )}
             </div>
           )}
         </div>

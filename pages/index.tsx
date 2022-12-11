@@ -5,12 +5,12 @@ import {
   amplitudo_data,
   bmi_data,
   body_weight_data,
+  breath_data,
   intermodulation_distortion_data,
   lung_data,
   peak_freq_data,
   signal_length_data,
 } from "data/data"
-import { motion } from "framer-motion"
 import type { NextPage } from "next"
 import { useState } from "react"
 import { Data } from "types"
@@ -54,14 +54,19 @@ const Home: NextPage = () => {
     units,
     selectedMonth,
     inverse,
+    value,
   }: {
     data: any
     title: string
     units?: string
     selectedMonth: number
     inverse?: boolean
+    value?: {
+      min: number
+      max: number
+    }
   }) => {
-    const PADDING_NUMBER: number = 20
+    const PADDING_NUMBER: number = 10
     const MAX_VALUE: number = Math.max(...data.map((d: Data) => d.value))
     const MIN_VALUE: number = Math.min(...data.map((d: Data) => d.value))
     const RANGE_N_MONTH_VALUE: number =
@@ -139,8 +144,8 @@ const Home: NextPage = () => {
       },
       meta: {
         value: {
-          min: MIN_VALUE - PADDING_NUMBER / 2,
-          max: MAX_VALUE + PADDING_NUMBER,
+          min: value?.min ?? MIN_VALUE - PADDING_NUMBER / 2,
+          max: value?.max ?? MAX_VALUE + PADDING_NUMBER,
         },
       },
       tooltip: {
@@ -287,7 +292,7 @@ const Home: NextPage = () => {
     <>
       <div className="fixed bottom-[20px] rounded-xl w-fit h-fit z-10 py-[10px] px-[10px] flex bg-white text-black justify-center left-0 right-0 mx-auto drop-shadow-xl">
         <button
-          onClick={() => handleIncrement()}
+          onClick={() => handleDecrement()}
           disabled={selectedMonth === 1}
           className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
           style={{
@@ -352,7 +357,7 @@ const Home: NextPage = () => {
         </div>
         <div className="gap-[20px] flex flex-col px-[24px]">
           <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
-          <div className="gap-[30px] grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1">
+          <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
             <LineArea
               data={body_weight_data}
               title="Berat badan"
@@ -369,6 +374,13 @@ const Home: NextPage = () => {
               title="Luas lesi infeksi"
               units="%"
               selectedMonth={selectedMonth}
+              inverse
+            />
+            <LineArea
+              data={breath_data}
+              title="Skala sesak"
+              selectedMonth={selectedMonth}
+              value={{ min: 0, max: 4 }}
               inverse
             />
           </div>

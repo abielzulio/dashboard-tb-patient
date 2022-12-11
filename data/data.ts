@@ -182,3 +182,29 @@ export const lung_data: Data[] = [
     value: 20,
   },
 ]
+export const breath_data: Data[] = [
+  {
+    month: "JAN",
+    value: 4,
+  },
+  {
+    month: "FEB",
+    value: 2,
+  },
+  {
+    month: "MAR",
+    value: 3,
+  },
+  {
+    month: "APR",
+    value: 2,
+  },
+  {
+    month: "MEI",
+    value: 1,
+  },
+  {
+    month: "JUN",
+    value: 0,
+  },
+]

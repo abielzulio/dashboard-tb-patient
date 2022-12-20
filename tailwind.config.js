@@ -5,6 +5,10 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    colors: {
+      black: "#272836",
+      white: "#fafcfe",
+    },
     extend: {
       backgroundImage: {
         "white-linear-gradient":

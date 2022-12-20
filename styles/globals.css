@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+::selection {
+  background-color: #b5d8ff !important;
+}
+
 html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -14,6 +18,14 @@ body {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+:where(.ant-segmented-item) {
+  @apply font-medium opacity-50 transition;
+}
+
+:where(.ant-segmented-item-selected) {
+  @apply !font-semibold opacity-100;
 }
 
 :where([hidden]) {

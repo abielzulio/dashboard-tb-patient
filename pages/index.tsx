@@ -54,17 +54,19 @@ const Home: NextPage = () => {
     units,
     selectedMonth,
     inverse,
-    value,
+    range,
+    changePosition = "column",
   }: {
-    data: any
+    data: any[]
     title: string
     units?: string
     selectedMonth: number
     inverse?: boolean
-    value?: {
+    range?: {
       min: number
       max: number
     }
+    changePosition?: "row" | "column"
   }) => {
     const PADDING_NUMBER: number = 10
     const MAX_VALUE: number = Math.max(...data.map((d: Data) => d.value))
@@ -76,12 +78,6 @@ const Home: NextPage = () => {
     const isUptrend: boolean =
       selectedMonth > 1 &&
       data[selectedMonth - 1].value > data[selectedMonth - 2].value
-        ? true
-        : false
-
-    const isDowntrend: boolean =
-      selectedMonth > 1 &&
-      data[selectedMonth - 1].value < data[selectedMonth - 2].value
         ? true
         : false
 
@@ -144,8 +140,8 @@ const Home: NextPage = () => {
       },
       meta: {
         value: {
-          min: value?.min ?? MIN_VALUE - PADDING_NUMBER / 2,
-          max: value?.max ?? MAX_VALUE + PADDING_NUMBER,
+          min: range?.min ?? MIN_VALUE - PADDING_NUMBER / 2,
+          max: range?.max ?? MAX_VALUE + PADDING_NUMBER,
         },
       },
       tooltip: {
@@ -206,10 +202,13 @@ const Home: NextPage = () => {
     }
 
     return (
-      <div className="h-fit w-full rounded-md p-[18px] border-[#E8E8E8] border-[1px] gap-[10px] flex flex-col">
-        <h1 className="text-black text-left font-semibold">{title}</h1>
-        <div className="flex flex-col gap-[0px] mb-[10px]">
-          <div className="flex gap-[10px] items-start">
+      <div className="h-fit w-full rounded-md p-[18px] border-[#E8E8E8] bg-white shadow-md border-[1px] gap-[10px] flex flex-col">
+        <h1 className="text-[#595B6B] text-left font-semibold">{title}</h1>
+        <div
+          className="flex justify-between gap-[0px] mb-[10px] -mt-[10px]"
+          style={{ flexDirection: changePosition }}
+        >
+          <div className="flex gap-[8px] items-start -ml-[3px]">
             <p className="text-black text-left text-[48px] font-semibold font-mono tracking-tighter">
               {data[selectedMonth - 1].value}
             </p>
@@ -218,35 +217,48 @@ const Home: NextPage = () => {
             )}
           </div>
           {isSecondMonthAvailable && selectedMonth > 1 && (
-            <div className="flex flex-col items-start text-black">
-              <div className="flex justify-center items-center gap-[5px]">
-                <p
-                  className="font-semibold"
-                  style={{ color: TREND_COLOR_FILL_PRIMARY }}
-                >
-                  {!isStable
-                    ? ((isUptrend && "↑") || (isDowntrend && "↓")) +
-                      " " +
-                      (
-                        data[selectedMonth - 1].value -
-                        data[selectedMonth - 2].value
-                      )
-                        .toString()
-                        .substring(0, 5)
-                    : "+0"}
-                  {units && ` ${units}`}
-                </p>
-                <p className="text-[12px] opacity-50">dari bulan lalu</p>
-              </div>
-
-              {RANGE_N_MONTH_VALUE !== 0 && (
-                <div className="flex justify-center items-center gap-[5px]">
+            <div className="flex flex-row items-start text-black gap-[30px] mt-[5px]">
+              <div className="flex items-start gap-[10px]">
+                {!isStable && (
+                  <span
+                    className="px-[5px] rounded-full text-[12px]"
+                    style={{
+                      color: TREND_COLOR_FILL_PRIMARY,
+                      background: TREND_COLOR_FILL_SECONDARY,
+                    }}
+                  >
+                    {isUptrend ? "↑" : "↓"}
+                  </span>
+                )}
+                <div className="flex flex-col -mt-[5px]">
                   <p
                     className="font-semibold"
+                    style={{ color: TREND_COLOR_FILL_PRIMARY }}
+                  >
+                    {!isStable &&
+                      Math.abs(
+                        data[selectedMonth - 1].value -
+                          data[selectedMonth - 2].value
+                      )
+                        .toString()
+                        .substring(0, 5)}
+                    {isStable && "0"}
+                    {units && ` ${units}`}
+                  </p>
+                  <p className="text-[12px] opacity-50 -mt-[2px]">bulan lalu</p>
+                </div>
+              </div>
+              {RANGE_N_MONTH_VALUE !== 0 && (
+                <div className="flex items-start gap-[10px]">
+                  <span
+                    className="px-[5px] rounded-full text-[12px]"
                     style={{
                       color: isBetterThanTheFirstMonth
                         ? color.green.primary
                         : color.red.primary,
+                      background: isBetterThanTheFirstMonth
+                        ? color.green.secondary
+                        : color.red.secondary,
                     }}
                   >
                     {isBetterThanTheFirstMonth
@@ -255,22 +267,37 @@ const Home: NextPage = () => {
                         : "↑"
                       : inverse
                       ? "↑"
-                      : "↓"}{" "}
-                    {(data[selectedMonth - 1].value - data[0].value)
-                      .toString()
-                      .substring(0, 5)}
-                    {units && ` ${units}`}
-                  </p>
-                  <p className="text-[12px] opacity-50">dari bulan pertama</p>
+                      : "↓"}
+                  </span>
+                  <div className="flex flex-col -mt-[5px]">
+                    <p
+                      className="font-semibold"
+                      style={{
+                        color: isBetterThanTheFirstMonth
+                          ? color.green.primary
+                          : color.red.primary,
+                      }}
+                    >
+                      {Math.abs(data[selectedMonth - 1].value - data[0].value)
+                        .toString()
+                        .substring(0, 5)}
+                      {units && ` ${units}`}
+                    </p>
+                    <p className="text-[12px] opacity-50 -mt-[2px]">
+                      awal bulan
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
           )}
         </div>
         {selectedMonth > 1 ? (
-          <Area {...config} />
+          <>
+            <Area {...config} />
+          </>
         ) : (
-          <p className="text-sm text-center w-full text-black opacity-30 py-[30px] px-[15px]">
+          <p className="text-sm text-center w-full text-black opacity-30 pb-[20px] pt-[0px] px-[15px]">
             Grafik akan muncul setelah data bulan kedua tersedia
           </p>
         )}
@@ -288,47 +315,90 @@ const Home: NextPage = () => {
       setSelectedMonth(selectedMonth + 1)
     }
   }
+
+  const month_range = signal_length_data.map(({ month }, id) => ({
+    value: id + 1,
+    label: month,
+  }))
+
+  console.log(month_range)
+
   return (
     <>
-      <div className="fixed bottom-[20px] rounded-xl w-fit h-fit z-10 py-[10px] px-[10px] flex bg-white text-black justify-center left-0 right-0 mx-auto drop-shadow-xl">
-        <button
-          onClick={() => handleDecrement()}
-          disabled={selectedMonth === 1}
-          className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
-          style={{
-            opacity: selectedMonth === 1 ? 0.3 : 1,
-            cursor: selectedMonth === 1 ? "not-allowed" : "pointer",
-          }}
-        >
-          ←
-        </button>
+      <div className="fixed bottom-[20px] border-[#E8E8E8] border-[1px] rounded-xl w-fit h-fit z-20 py-[10px] px-[10px] flex bg-[#fafcfe] text-black justify-center left-0 right-0 mx-auto">
+        {selectedMonth > 1 && (
+          <button
+            onClick={() => handleDecrement()}
+            disabled={selectedMonth === 1}
+            className="px-[8px] mr-[10px] hover:bg-[#f5f5f5] rounded-md transition"
+            style={{
+              opacity: selectedMonth === 1 ? 0.3 : 1,
+              cursor: selectedMonth === 1 ? "not-allowed" : "pointer",
+            }}
+          >
+            ←
+          </button>
+        )}
         <Segmented
-          options={signal_length_data.map((item, id) => id + 1)}
+          options={month_range}
           value={selectedMonth}
+          defaultValue={selectedMonth}
           onChange={(value: SegmentedValue) =>
             setSelectedMonth(value as number)
           }
           onResize={undefined}
           onResizeCapture={undefined}
           color="dark"
-          className="mx-[10px]"
+          className="border-[#E8E8E8] border-[1px]"
         />
-        <button
-          onClick={() => handleIncrement()}
-          disabled={selectedMonth === 6}
-          className="px-[8px] hover:bg-[#f5f5f5] rounded-md transition"
-          style={{
-            opacity: selectedMonth === 6 ? 0.3 : 1,
-            cursor: selectedMonth === 6 ? "not-allowed" : "pointer",
-          }}
-        >
-          →
-        </button>
+        {selectedMonth < 6 && (
+          <button
+            onClick={() => handleIncrement()}
+            disabled={selectedMonth === 6}
+            className="px-[8px] ml-[10px] hover:bg-[#f5f5f5] rounded-md transition"
+            style={{
+              opacity: selectedMonth === 6 ? 0.3 : 1,
+              cursor: selectedMonth === 6 ? "not-allowed" : "pointer",
+            }}
+          >
+            →
+          </button>
+        )}
       </div>
-      <section className="min-w-screen min-h-screen pt-[30px] pb-[80px] gap-[30px] flex flex-col bg-white">
-        <div className="gap-[20px] flex flex-col px-[24px]">
+      <section className="min-w-screen min-h-screen pt-[30px] pb-[100px] gap-[30px] flex flex-col bg-[#f9fbfd] px-[24px]">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-[20px]">
+          <div className="grid sm:grid-cols-2 grid-cols-1">
+            <div className="flex flex-col gap-[5px] text-black">
+              <h1 className="text-left font-bold text-[32px]">Dashboard</h1>
+              <p className="text-left font-mono font-medium text-[14px]">
+                MD29192NADA
+              </p>
+            </div>
+            <div className="flex flex-row justify-between md:mt-[10px] w-full">
+              <div className="flex flex-col">
+                <p className="uppercase text-[#8F8F8F] text-[12px] font-semibold">
+                  Umur
+                </p>
+                <h1 className="text-black text-left font-semibold">24</h1>
+              </div>
+              <div className="flex flex-col">
+                <p className="uppercase text-[#8F8F8F] text-[12px] font-semibold">
+                  Kelamin
+                </p>
+                <h1 className="text-black text-left font-semibold">P</h1>
+              </div>
+              <div className="flex flex-col">
+                <p className="uppercase text-[#8F8F8F] text-[12px] font-semibold">
+                  Tinggi
+                </p>
+                <h1 className="text-black text-left font-semibold">170</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="gap-[10px] flex flex-col">
           <div className="flex justify-between">
-            <h2 className="text-black text-[24px] font-semibold">Wicara</h2>
+            <h2 className="text-black text-[20px] font-semibold">Wicara</h2>
           </div>
           <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
             <LineArea
@@ -355,8 +425,8 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
-        <div className="gap-[20px] flex flex-col px-[24px]">
-          <h2 className="text-black text-[24px] font-semibold">Fisiologis</h2>
+        <div className="gap-[10px] flex flex-col">
+          <h2 className="text-black text-[20px] font-semibold">Fisiologis</h2>
           <div className="gap-[30px] grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1">
             <LineArea
               data={body_weight_data}
@@ -380,7 +450,7 @@ const Home: NextPage = () => {
               data={breath_data}
               title="Skala sesak"
               selectedMonth={selectedMonth}
-              value={{ min: 0, max: 4 }}
+              range={{ min: 0, max: 4 }}
               inverse
             />
           </div>
